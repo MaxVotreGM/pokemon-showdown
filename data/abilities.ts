@@ -6474,9 +6474,6 @@ schemednight: {
 			for (i in boost) {
 				boost[i]! *= -1;
 			}
-			let success = false;
-			let i: BoostID;
-			for (i in target.boosts) {
 				if (target.boosts[i] === 0) continue;
 				target.boosts[i] = -target.boosts[i];
 				success = true;
