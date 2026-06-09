@@ -6468,19 +6468,17 @@ schemednight: {
 		num: 25,
 	},
 	twistedwarp: {
-		onTryHit(target, source, move) {
-			if (target === source || move.category === 'Statut' || move.type === '???' || move.id === 'struggle') return;
-			if (move.id === 'skydrop' && !source.volatiles['skydrop']) return;
-			this.debug('Wonder Guard immunity: ' + move.id);
-			if (this.checkMoveMakesContact(move, source, target, false)) {
-				this.add('-immune', target, '[from] ability: Time Warp');
-				return null;
+		onChangeBoost(boost, target, source, effect) {
+			if (effect && effect.id === 'zpower') return;
+			let i: BoostID;
+			for (i in boost) {
+				boost[i]! *= -1;
 			}
 		},
-		flags: { failroleplay: 1, noreceiver: 1, noentrain: 1, failskillswap: 1, breakable: 1 },
-		name: "Time Warp",
-		rating: 5,
-		num: 25,
+		flags: { breakable: 0 },
+		name: "Twisted Warp",
+		rating: 4.5,
+		num: 126,
 	},
 	wonderskin: {
 		onModifyAccuracyPriority: 10,
