@@ -5317,6 +5317,25 @@ schemednight: {
 		rating: 4.5,
 		num: 3,
 	},
+	terrornight: {
+		onSourceDamagingHit(damage, target, source, move) {
+				target.trySetStatus('slp', source);
+				},
+	   onResidualOrder: 28,
+		onResidualSubOrder: 2,
+			onResidual(pokemon) {
+			if (!pokemon.hp) return;
+			for (const target of pokemon.foes()) {
+				if (target.status === 'slp' || target.hasAbility('comatose')) {
+					this.damage(target.baseMaxhp / 2, target, pokemon);
+				}
+			}
+		},
+		flags: {},
+		name: "Terror Night",
+		rating: 4.5,
+		num: 3,
+	},
 	stakeout: {
 		onModifyAtkPriority: 5,
 		onModifyAtk(atk, attacker, defender) {
@@ -6434,6 +6453,21 @@ schemednight: {
 		num: 25,
 	},
 	timewarp: {
+		onTryHit(target, source, move) {
+			if (target === source || move.category === 'Statut' || move.type === '???' || move.id === 'struggle') return;
+			if (move.id === 'skydrop' && !source.volatiles['skydrop']) return;
+			this.debug('Wonder Guard immunity: ' + move.id);
+			if (this.checkMoveMakesContact(move, source, target, false)) {
+				this.add('-immune', target, '[from] ability: Time Warp');
+				return null;
+			}
+		},
+		flags: { failroleplay: 1, noreceiver: 1, noentrain: 1, failskillswap: 1, breakable: 1 },
+		name: "Time Warp",
+		rating: 5,
+		num: 25,
+	},
+	twistedwarp: {
 		onTryHit(target, source, move) {
 			if (target === source || move.category === 'Statut' || move.type === '???' || move.id === 'struggle') return;
 			if (move.id === 'skydrop' && !source.volatiles['skydrop']) return;
